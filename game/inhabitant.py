@@ -2,14 +2,16 @@ from abc import ABC, abstractmethod
 from collections import Counter
 from typing import Iterable, Literal 
 
-from game.dice import DiceColor, DiceValue,  DieResult
+from game.dice import DiceColor, DiceValue, DieResult
 from game.location import  LocationType
 
 
 class Inhabitant(ABC):
 
-    def __init__(self, color: LocationType) -> None:
-        self.color = color
+    @property
+    @abstractmethod
+    def related_location(self) -> LocationType:
+        pass
 
     @abstractmethod
     def value(self, kingdom: Iterable[object]) -> int:
@@ -18,29 +20,17 @@ class Inhabitant(ABC):
     @abstractmethod
     def can_take(self, dice: Iterable[DieResult]) -> bool:
         pass
-
-
-class Gnome(Inhabitant):
-
-    def __init__(self, color: LocationType, value: int, dice_color: DiceColor, dice_count: int) -> None:
-        super().__init__(color)
-        self.dice_color = dice_color
-        self.dice_count = dice_count
-        self._value = value
-
-    def value(self, kingdom: Iterable[object]) -> int:
-        return self._value
-
-    def can_take(self, dice: Iterable[DieResult]) -> bool:
-        return sum(1 for die in dice if die[1] == self.dice_color) >= self.dice_count
 
 
 class Bourgeois(Inhabitant):
 
-    def __init__(self, color: LocationType, value: int, parity: Literal['odd', 'even']) -> None:
-        super().__init__(color)
+    def __init__(self, value: int, parity: Literal['odd', 'even']) -> None:
         self._value = value
         self.parity = parity
+
+    @property
+    def related_location(self) -> LocationType:
+        return LocationType.CITY
 
     def value(self, kingdom: Iterable[object]) -> int:
         return self._value
@@ -51,10 +41,13 @@ class Bourgeois(Inhabitant):
         
 class Elf(Inhabitant):
 
-    def __init__(self, color: LocationType, value: int, sequence_length: int) -> None:
-        super().__init__(color)
+    def __init__(self, value: int, sequence_length: int) -> None:
         self.sequence_length = sequence_length
         self._value = value
+
+    @property
+    def related_location(self) -> LocationType:
+        return LocationType.CITY
 
     def value(self, kingdom: Iterable[object]) -> int:
         return self._value
@@ -78,11 +71,14 @@ class Elf(Inhabitant):
 
 class Dwarf(Inhabitant):
 
-    def __init__(self, color: LocationType, value: int, dice_value: DiceValue, dice_count: int) -> None:
-        super().__init__(color)
+    def __init__(self, value: int, dice_value: DiceValue, dice_count: int) -> None:
         self._value = value
         self.dice_value = dice_value
         self.dice_count = dice_count
+
+    @property
+    def related_location(self) -> LocationType:
+        return LocationType.MINE
 
     def value(self, kingdom: Iterable[object]) -> int:
         return self._value
@@ -90,13 +86,34 @@ class Dwarf(Inhabitant):
     def can_take(self, dice: Iterable[DieResult]) -> bool:
         return sum(1 for die in dice if die[0] == self.dice_value) >= self.dice_count
 
+
+class Gnome(Inhabitant):
+
+    def __init__(self, value: int, dice_color: DiceColor, dice_count: int) -> None:
+        self.dice_color = dice_color
+        self.dice_count = dice_count
+        self._value = value
+
+    @property
+    def related_location(self) -> LocationType:
+        return LocationType.WORKSHOP
+
+    def value(self, kingdom: Iterable[object]) -> int:
+        return self._value
+
+    def can_take(self, dice: Iterable[DieResult]) -> bool:
+        return sum(1 for die in dice if die[1] == self.dice_color) >= self.dice_count
+
         
 class Orc(Inhabitant):
 
-    def __init__(self, color: LocationType, value: int, dice_sets: list[int]) -> None:
-        super().__init__(color)
+    def __init__(self, value: int, dice_sets: list[int]) -> None:
         self._value = value
         self.dice_sets = dice_sets
+
+    @property
+    def related_location(self) -> LocationType:
+        return LocationType.ORCS_VILLAGE
 
     def value(self, kingdom: Iterable[object]) -> int:
         return self._value
@@ -110,10 +127,13 @@ class Orc(Inhabitant):
 
 class MushKobold(Inhabitant):
 
-    def __init__(self, color: LocationType, value: int, dice_count: int) -> None:
-        super().__init__(color)
+    def __init__(self, value: int, dice_count: int) -> None:
         self._value = value
         self.dice_count = dice_count
+
+    @property
+    def related_location(self) -> LocationType:
+        return LocationType.FOREST
 
     def value(self, kingdom: Iterable[object]) -> int:
         return self._value
@@ -126,10 +146,13 @@ class MushKobold(Inhabitant):
 
 class Sorcerer(Inhabitant):
 
-    def __init__(self, color: LocationType, value: int, dice_colors: dict[DiceColor, int]) -> None:
-        super().__init__(color)
+    def __init__(self, value: int, dice_colors: dict[DiceColor, int]) -> None:
         self._value = value
         self.dice_colors = dice_colors
+
+    @property
+    def related_location(self) -> LocationType:
+        return LocationType.FOREST
 
     def value(self, kingdom: Iterable[object]) -> int:
         return self._value
@@ -141,9 +164,12 @@ class Sorcerer(Inhabitant):
 
 class Fairy(Inhabitant):
 
-    def __init__(self, color: LocationType, dice_colors: dict[DiceColor, int]) -> None:
-        super().__init__(color)
+    def __init__(self, dice_colors: dict[DiceColor, int]) -> None:
         self.dice_colors = dice_colors
+
+    @property
+    def related_location(self) -> LocationType:
+        return LocationType.FOREST
 
     def value(self, kingdom: Iterable[object]) -> int:
         return sum(1 for card in kingdom if isinstance(card, Fairy))

@@ -1,4 +1,4 @@
-from typing import Iterable, Optional 
+from typing import Optional 
 from game.inhabitant import Inhabitant
 from game.location import Location, get_initial_locations
 
@@ -8,10 +8,6 @@ class Penalty(int):
 
 
 class Kingdom(list[Inhabitant | Location | Penalty]):
-
-    def __init__(self, cards: Iterable[Inhabitant | Location | Penalty]=[]) -> None:
-        super().__init__(cards)
-
     @property
     def inhabitants(self):
         return (inh for inh in self if isinstance(inh, Inhabitant))
