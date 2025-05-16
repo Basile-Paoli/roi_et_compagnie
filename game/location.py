@@ -11,10 +11,11 @@ class LocationType(Enum):
 
 
 class Location:
+
     def __init__(self, value: Literal[2, 3, 4] , location_type: LocationType):
         self.value = value
         self.location_type = location_type
-    
+
 
 def get_initial_locations():
     return list(
@@ -25,4 +26,3 @@ def get_initial_locations():
         ]
         for t in LocationType
     )
-    

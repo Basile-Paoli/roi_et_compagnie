@@ -1,4 +1,4 @@
-import pygame 
+import pygame
 from pygame.surface import Surface
 from pygame import display
 from pygame.rect import Rect
@@ -21,7 +21,7 @@ def main() -> None:
         surf: Surface = Surface((50, 50))
         surf.fill((255, 0, 0))
 
-        
+
         screen.fill((0, 0, 0))
         screen.blit(surf, rectangle)
         display.flip()
