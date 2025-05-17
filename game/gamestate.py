@@ -1,13 +1,13 @@
-from typing import Optional 
+from typing import  Optional 
+from game.card_types import KingdomCard, Location, Penalty, get_initial_locations
 from game.inhabitant import Inhabitant
-from game.location import Location, get_initial_locations
 
 
-class Penalty(int):
-    pass
+class Kingdom(list[KingdomCard]):
 
+    def total_value(self) -> int:
+        return sum(inh.value(self) for inh in self)
 
-class Kingdom(list[Inhabitant | Location | Penalty]):
     @property
     def inhabitants(self):
         return (inh for inh in self if isinstance(inh, Inhabitant))

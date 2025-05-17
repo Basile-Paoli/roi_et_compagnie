@@ -1,25 +1,8 @@
-from abc import ABC, abstractmethod
 from collections import Counter
 from typing import Iterable, Literal 
 
+from game.card_types import Inhabitant, KingdomCard, LocationType
 from game.dice import DiceColor, DiceValue, DieResult
-from game.location import  LocationType
-
-
-class Inhabitant(ABC):
-
-    @property
-    @abstractmethod
-    def related_location(self) -> LocationType:
-        pass
-
-    @abstractmethod
-    def value(self, kingdom: Iterable[object]) -> int:
-        pass
-
-    @abstractmethod
-    def can_take(self, dice: Iterable[DieResult]) -> bool:
-        pass
 
 
 class Bourgeois(Inhabitant):
@@ -32,7 +15,7 @@ class Bourgeois(Inhabitant):
     def related_location(self) -> LocationType:
         return LocationType.CITY
 
-    def value(self, kingdom: Iterable[object]) -> int:
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
@@ -49,7 +32,7 @@ class Elf(Inhabitant):
     def related_location(self) -> LocationType:
         return LocationType.CITY
 
-    def value(self, kingdom: Iterable[object]) -> int:
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
 
     @staticmethod
@@ -80,7 +63,7 @@ class Dwarf(Inhabitant):
     def related_location(self) -> LocationType:
         return LocationType.MINE
 
-    def value(self, kingdom: Iterable[object]) -> int:
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
@@ -98,7 +81,7 @@ class Gnome(Inhabitant):
     def related_location(self) -> LocationType:
         return LocationType.WORKSHOP
 
-    def value(self, kingdom: Iterable[object]) -> int:
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
@@ -115,7 +98,7 @@ class Orc(Inhabitant):
     def related_location(self) -> LocationType:
         return LocationType.ORCS_VILLAGE
 
-    def value(self, kingdom: Iterable[object]) -> int:
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
@@ -135,7 +118,7 @@ class MushKobold(Inhabitant):
     def related_location(self) -> LocationType:
         return LocationType.FOREST
 
-    def value(self, kingdom: Iterable[object]) -> int:
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
@@ -154,7 +137,7 @@ class Sorcerer(Inhabitant):
     def related_location(self) -> LocationType:
         return LocationType.FOREST
 
-    def value(self, kingdom: Iterable[object]) -> int:
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
@@ -171,7 +154,7 @@ class Fairy(Inhabitant):
     def related_location(self) -> LocationType:
         return LocationType.FOREST
 
-    def value(self, kingdom: Iterable[object]) -> int:
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return sum(1 for card in kingdom if isinstance(card, Fairy))
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
