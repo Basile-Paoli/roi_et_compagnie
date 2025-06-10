@@ -10,6 +10,9 @@ class DiceColor(Enum):
     GREEN = 2
     BLUE = 3
 
+    def to_json(self) -> int:
+        return self.value
+
 
 type DieResult = tuple[DiceValue, DiceColor]
 
@@ -23,6 +26,12 @@ class Die(list[DieResult]):
     def roll(self) -> DieResult:
         self.currentResult = random.choice(self)
         return self.currentResult
+
+    def to_json(self) -> dict:
+        return {
+            "currentResult": self.currentResult,
+            "die": list(self)
+        }
 
 
 def die1(): return Die([

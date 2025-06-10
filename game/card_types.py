@@ -20,6 +20,9 @@ class LocationType(Enum):
     ORCS_VILLAGE = 3
     FOREST = 4
 
+    def to_json(self) -> int:
+        return self.value
+
 
 class Location(KingdomCard):
 
@@ -29,6 +32,13 @@ class Location(KingdomCard):
 
     def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
+
+    def to_json(self) -> dict:
+        return {
+            "type": "location",
+            "value": self._value,
+            "location_type": self.location_type
+        }
 
 
 def get_initial_locations():

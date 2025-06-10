@@ -1,7 +1,9 @@
 from typing import Optional, Iterable
-from game.card_types import KingdomCard, Location, Penalty, get_initial_locations
+from game.card_types import KingdomCard, Location, Penalty, get_initial_locations,\
+    initial_penalties
 from game.dice import get_dice, Die
-from game.inhabitant import Inhabitant, Elf, Dragon, Sorcerer, Hypnotizer
+from game.inhabitant import Inhabitant, Elf, Dragon, Sorcerer, Hypnotizer,\
+    initial_inhabitants
 
 
 class Kingdom(list[KingdomCard]):
@@ -28,12 +30,24 @@ class Player:
         self.kingdom: Kingdom = Kingdom()
         self.id = i
 
+    def to_json(self) -> dict:
+        return {
+            "kingdom": self.kingdom,
+            "id": self.id
+        }
+
 
 class DieRollState:
 
     def __init__(self) -> None:
         self.dice = get_dice()
         self.nb_tries = 1
+
+    def to_json(self) -> dict:
+        return {
+            "dice": self.dice,
+            "nb_tries": self.nb_tries
+        }
 
 
 class ShopSlot:
@@ -42,17 +56,25 @@ class ShopSlot:
         self.locations = locations
         self.inhabitant = inhabitant
         self.type = locations[0].location_type
+    
+    def to_json(self) -> dict:
+        return {
+            "locations": self.locations,
+            "inhabitant": self.inhabitant,
+            "type": self.type
+        }
 
 
 class Game:
 
     def __init__(self, player_count: int) -> None:
-        self.inhabitant_deck: list[Inhabitant] = []
-        self.penalty_deck: list[Penalty] = []
+        self.inhabitant_deck: list[Inhabitant] = initial_inhabitants()
+        self.penalty_deck: list[Penalty] = initial_penalties()
         self.shop = [ShopSlot(locations) for locations in get_initial_locations()]
         self.players = [Player(i) for i in range(player_count)]
         self.current_player_index = 0
         self.die_roll = DieRollState()
+        self.fill_shop()
 
     @property
     def player_count(self) -> int:
@@ -71,6 +93,16 @@ class Game:
         return any(len(slot.locations) == 0 for slot in self.shop) \
             or len(self.inhabitant_deck) == 0 \
             or len(self.penalty_deck) == 0
+
+    def to_json(self) -> dict:
+        return {
+            "inhabitant_deck": self.inhabitant_deck,
+            "penalty_deck": self.penalty_deck,
+            "shop": self.shop,
+            "players": self.players,
+            "current_player_index": self.current_player_index,
+            "die_roll": self.die_roll,
+        }
 
     def next_player(self) -> None:
         self.current_player_index = (self.current_player_index + 1) % self.player_count
