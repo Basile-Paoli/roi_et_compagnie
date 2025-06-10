@@ -91,6 +91,7 @@ class TestInhabitant(unittest.TestCase):
             DiceColor.BLUE: 2
         })
         kingdom: Kingdom = Kingdom([
+            f,
             Elf(5, 4),
             Dwarf(5, 4, 3),
             Orc(5, [1, 2, 3]),
@@ -105,6 +106,7 @@ class TestInhabitant(unittest.TestCase):
         self.assertEqual(f.value(kingdom), 1)
 
         kingdom = Kingdom([
+            f,
             Dwarf(5, 4, 3),
             Orc(5, [1, 2, 3]),
             MushKobold(5, 4),
@@ -118,6 +120,7 @@ class TestInhabitant(unittest.TestCase):
         self.assertEqual(f.value(kingdom), 2)
 
         kingdom = Kingdom([
+            f,
             Fairy({
                 DiceColor.RED: 2,
                 DiceColor.GREEN: 1,
@@ -134,7 +137,7 @@ class TestInhabitant(unittest.TestCase):
             }),
         ])
 
-        self.assertEqual(f.value(kingdom), 3)
+        self.assertEqual(f.value(kingdom), 4)
 
 
 if __name__ == "__main__":
