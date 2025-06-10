@@ -319,3 +319,29 @@ def initial_inhabitants() -> list[Inhabitant]:
         Dragon(4, 28),
         Dragon(2, 25),
     ]
+
+
+def inhabitant_from_json(data: dict) -> Inhabitant:
+    inhabitant_type = data["type"]
+    if inhabitant_type == "bourgeois":
+        return Bourgeois(data["value"], data["parity"])
+    elif inhabitant_type == "elf":
+        return Elf(data["value"], data["sequence_length"])
+    elif inhabitant_type == "dwarf":
+        return Dwarf(data["value"], data["dice_value"], data["dice_count"])
+    elif inhabitant_type == "gnome":
+        return Gnome(data["value"], DiceColor.from_json(data["dice_color"]), data["dice_count"])
+    elif inhabitant_type == "orc":
+        return Orc(data["value"], data["dice_sets"])
+    elif inhabitant_type == "mush_kobold":
+        return MushKobold(data["value"], data["dice_count"])
+    elif inhabitant_type == "sorcerer":
+        return Sorcerer(data["value"], {DiceColor.from_json(k): v for k, v in data["dice_colors"].items()})
+    elif inhabitant_type == "fairy":
+        return Fairy({DiceColor.from_json(k): v for k, v in data["dice_colors"].items()})
+    elif inhabitant_type == "hypnotizer":
+        return Hypnotizer(data["value"], data["max_dice_val"])
+    elif inhabitant_type == "dragon":
+        return Dragon(data["value"], data["min_dice_val"])
+    else:
+        raise ValueError(f"Unknown inhabitant type: {inhabitant_type}")

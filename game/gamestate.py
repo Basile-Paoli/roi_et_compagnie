@@ -1,9 +1,9 @@
 from typing import Optional, Iterable
-from game.card_types import KingdomCard, Location, Penalty, get_initial_locations,\
+from game.card_types import KingdomCard, Location, Penalty, get_initial_locations, \
     initial_penalties
 from game.dice import get_dice, Die
-from game.inhabitant import Inhabitant, Elf, Dragon, Sorcerer, Hypnotizer,\
-    initial_inhabitants
+from game.inhabitant import Inhabitant, Elf, Dragon, Sorcerer, Hypnotizer, \
+    initial_inhabitants, inhabitant_from_json
 
 
 class Kingdom(list[KingdomCard]):
@@ -24,6 +24,17 @@ class Kingdom(list[KingdomCard]):
         return (pen for pen in self if isinstance(pen, Penalty))
 
 
+def card_from_json(data: dict | int) -> KingdomCard:
+    if isinstance(data, int):
+        return Penalty(data)
+    if data["type"] == "location":
+        return Location.from_json(data)
+    elif data["type"] == "inhabitant":
+        return inhabitant_from_json(data)
+    else:
+        raise ValueError(f"Unknown card type: {data['type']}")
+
+
 class Player:
 
     def __init__(self, i: int) -> None:
@@ -36,6 +47,12 @@ class Player:
             "id": self.id
         }
 
+    @staticmethod
+    def from_json(data: dict) -> 'Player':
+        player = Player(data["id"])
+        player.kingdom = Kingdom([card_from_json(inh) for inh in data["kingdom"]])
+        return player
+
 
 class DieRollState:
 
@@ -45,9 +62,16 @@ class DieRollState:
 
     def to_json(self) -> dict:
         return {
-            "dice": self.dice,
+            "dice": [die.to_json() for die in self.dice],
             "nb_tries": self.nb_tries
         }
+
+    @staticmethod
+    def from_json(data: dict) -> 'DieRollState':
+        state = DieRollState()
+        state.dice = [Die.from_json(die) for die in data["dice"]]
+        state.nb_tries = data["nb_tries"]
+        return state
 
 
 class ShopSlot:
@@ -63,6 +87,12 @@ class ShopSlot:
             "inhabitant": self.inhabitant,
             "type": self.type
         }
+
+    @staticmethod
+    def from_json(data: dict) -> 'ShopSlot':
+        locations = [Location.from_json(loc) for loc in data["locations"]]
+        inhabitant = inhabitant_from_json(data["inhabitant"]) if data["inhabitant"] else None
+        return ShopSlot(locations, inhabitant)
 
 
 class Game:
@@ -103,6 +133,17 @@ class Game:
             "current_player_index": self.current_player_index,
             "die_roll": self.die_roll,
         }
+
+    @staticmethod
+    def from_json(data: dict) -> 'Game':
+        game = Game(len(data["players"]))
+        game.inhabitant_deck = [inhabitant_from_json(inh) for inh in data["inhabitant_deck"]]
+        game.penalty_deck = [Penalty(pen) for pen in data["penalty_deck"]]
+        game.shop = [ShopSlot.from_json(slot) for slot in data["shop"]]
+        game.players = [Player.from_json(player) for player in data["players"]]
+        game.current_player_index = data["current_player_index"]
+        game.die_roll = DieRollState.from_json(data["die_roll"])
+        return game
 
     def next_player(self) -> None:
         self.current_player_index = (self.current_player_index + 1) % self.player_count

@@ -13,6 +13,10 @@ class DiceColor(Enum):
     def to_json(self) -> int:
         return self.value
 
+    @staticmethod
+    def from_json(value: int) -> "DiceColor":
+        return DiceColor(int(value)) if int(value) in (1, 2, 3) else DiceColor.RED  # Default to RED if invalid
+
 
 type DieResult = tuple[DiceValue, DiceColor]
 
@@ -32,6 +36,12 @@ class Die(list[DieResult]):
             "currentResult": self.currentResult,
             "die": list(self)
         }
+
+    @staticmethod
+    def from_json(data: dict) -> "Die":
+        die = Die((tuple(d) for d in data["die"]))
+        die.currentResult = tuple(data["currentResult"])
+        return die
 
 
 def die1(): return Die([

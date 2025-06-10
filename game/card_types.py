@@ -40,6 +40,10 @@ class Location(KingdomCard):
             "location_type": self.location_type
         }
 
+    @staticmethod
+    def from_json(data: dict) -> "Location":
+        return Location(data["value"], LocationType(int(data["location_type"])))
+
 
 def get_initial_locations():
     return list(
@@ -66,9 +70,10 @@ class Inhabitant(KingdomCard, ABC):
     @abstractmethod
     def can_take(self, dice: Iterable[DieResult]) -> bool:
         pass
+    
 
 
-class Penalty(int):
+class Penalty(int, KingdomCard):
 
     def value(self, kingdom: Iterable[object]) -> int:
         return -self
