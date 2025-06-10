@@ -1,4 +1,5 @@
-from typing import  Literal
+import random
+from typing import Literal, Iterable
 from enum import Enum
 
 type DiceValue = Literal[1, 2, 3, 4, 5, 6]
@@ -12,12 +13,19 @@ class DiceColor(Enum):
 
 type DieResult = tuple[DiceValue, DiceColor]
 
+
 class Die(list[DieResult]):
-    pass
+
+    def __init__(self, die: Iterable[DieResult]):
+        super().__init__(die)
+        self.currentResult: DieResult = random.choice(self)
+
+    def roll(self) -> DieResult:
+        self.currentResult = random.choice(self)
+        return self.currentResult
 
 
-
-die1 = Die([
+def die1(): return Die([
     (1, DiceColor.BLUE),
     (2, DiceColor.GREEN),
     (3, DiceColor.RED),
@@ -26,7 +34,8 @@ die1 = Die([
     (6, DiceColor.BLUE)
 ])
 
-die2 = Die([
+
+def die2(): return Die([
     (1, DiceColor.RED),
     (2, DiceColor.BLUE),
     (3, DiceColor.GREEN),
@@ -35,7 +44,8 @@ die2 = Die([
     (6, DiceColor.RED)
 ])
 
-die3 = Die([
+
+def die3(): return Die([
     (1, DiceColor.GREEN),
     (2, DiceColor.RED),
     (3, DiceColor.BLUE),
@@ -44,4 +54,5 @@ die3 = Die([
     (6, DiceColor.GREEN)
 ])
 
-dice = [die1, die2, die3] * 2
+
+def get_dice(): return [die1(), die1(), die2(), die2(), die3(), die3()]

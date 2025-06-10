@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import Iterable, Literal 
+from typing import Iterable, Literal, Optional
 
 from game.card_types import Inhabitant, KingdomCard, LocationType
 from game.dice import DiceColor, DiceValue, DieResult
@@ -12,7 +12,7 @@ class Bourgeois(Inhabitant):
         self.parity = parity
 
     @property
-    def related_location(self) -> LocationType:
+    def related_location(self) -> Optional[LocationType]:
         return LocationType.CITY
 
     def value(self, kingdom: Iterable[KingdomCard]) -> int:
@@ -21,7 +21,7 @@ class Bourgeois(Inhabitant):
     def can_take(self, dice: Iterable[DieResult]) -> bool:
         return all(d[0] % 2 == (1 if self.parity == 'odd' else 0) for d in dice)
 
-        
+
 class Elf(Inhabitant):
 
     def __init__(self, value: int, sequence_length: int) -> None:
@@ -50,7 +50,7 @@ class Elf(Inhabitant):
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
         return Elf.longest_sequence(dice) >= self.sequence_length
-        
+
 
 class Dwarf(Inhabitant):
 
@@ -87,7 +87,7 @@ class Gnome(Inhabitant):
     def can_take(self, dice: Iterable[DieResult]) -> bool:
         return sum(1 for die in dice if die[1] == self.dice_color) >= self.dice_count
 
-        
+
 class Orc(Inhabitant):
 
     def __init__(self, value: int, dice_sets: list[int]) -> None:
@@ -123,7 +123,7 @@ class MushKobold(Inhabitant):
 
     def can_take(self, dice: Iterable[DieResult]) -> bool:
         dice_by_color = Counter(d[1] for d in dice)
-    
+
         return any(count >= self.dice_count for count in dice_by_color.values())
 
 
@@ -146,7 +146,6 @@ class Sorcerer(Inhabitant):
 
 
 class Fairy(Inhabitant):
-
     def __init__(self, dice_colors: dict[DiceColor, int]) -> None:
         self.dice_colors = dice_colors
 
@@ -161,3 +160,34 @@ class Fairy(Inhabitant):
         dice_by_color = Counter(d[1] for d in dice)
         return all(dice_by_color.get(color, 0) >= count for color, count in self.dice_colors.items())
 
+
+class Hypnotizer(Inhabitant):
+    def __init__(self, value: int, max_dice_val: int) -> None:
+        self._value = value
+        self.max_dice_val = max_dice_val
+
+    @property
+    def related_location(self) -> Optional[LocationType]:
+        return None
+
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
+        return self._value
+
+    def can_take(self, dice: Iterable[DieResult]) -> bool:
+        return sum(d[0] for d in dice) <= self.max_dice_val
+
+
+class Dragon(Inhabitant):
+    def __init__(self, value: int, min_dice_val: int) -> None:
+        self._value = value
+        self.min_dice_val = min_dice_val
+
+    @property
+    def related_location(self):
+        return None
+
+    def value(self, kingdom: Iterable[KingdomCard]) -> int:
+        return -self._value
+
+    def can_take(self, dice: Iterable[DieResult]) -> bool:
+        return sum(d[0] for d in dice) >= self.min_dice_val

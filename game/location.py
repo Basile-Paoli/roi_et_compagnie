@@ -12,17 +12,17 @@ class LocationType(Enum):
 
 class Location:
 
-    def __init__(self, value: Literal[2, 3, 4] , location_type: LocationType):
+    def __init__(self, value: Literal[2, 3, 4], location_type: LocationType):
         self.value = value
         self.location_type = location_type
 
 
 def get_initial_locations():
-    return list(
+    return [
         [
             Location(2, t),
             Location(3, t),
             Location(4, t)
         ]
         for t in LocationType
-    )
+    ]

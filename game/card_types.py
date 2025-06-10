@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Iterable, Literal
+from typing import Iterable, Literal, Optional
 
 from game.dice import DieResult
 
@@ -34,9 +34,9 @@ class Location(KingdomCard):
 def get_initial_locations():
     return list(
         [
-            Location(2, t),
+            Location(4, t),
             Location(3, t),
-            Location(4, t)
+            Location(2, t),
         ]
         for t in LocationType
     )
@@ -46,7 +46,7 @@ class Inhabitant(KingdomCard, ABC):
 
     @property
     @abstractmethod
-    def related_location(self) -> LocationType:
+    def related_location(self) -> Optional[LocationType]:
         pass
 
     @abstractmethod
