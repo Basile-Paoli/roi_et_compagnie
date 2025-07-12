@@ -181,6 +181,10 @@ class Sorcerer(Inhabitant):
     def __init__(self, value: int, dice_colors: dict[DiceColor, int]) -> None:
         self._value = value
         self.dice_colors = dice_colors
+        color_part = "-".join(
+            f"{color.value}{count}" for color, count in sorted(self.dice_colors.items(), key=lambda x: x[0].value)
+        )
+        self.image_path = f"Cards/inhabitants/sorcerer/{color_part}_{value}.png"
         
 
     @property
@@ -206,6 +210,10 @@ class Fairy(Inhabitant):
 
     def __init__(self, dice_colors: dict[DiceColor, int]) -> None:
         self.dice_colors = dice_colors
+        color_part = "-".join(
+            f"{color.value}{count}" for color, count in sorted(self.dice_colors.items(), key=lambda x: x[0].value)
+        )
+        self.image_path = f"Cards/inhabitants/fairy/{color_part}.png"
 
     @property
     def related_location(self) -> LocationType:
