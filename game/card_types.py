@@ -76,8 +76,12 @@ class Inhabitant(KingdomCard, ABC):
 
 class Penalty(int, KingdomCard):
 
+    def __init__(self, value: int):
+        self._value = value
+        self.image_path = f"Cards/penalty/-{value}.png"
+
     def value(self, kingdom: Iterable[object]) -> int:
-        return -self
+        return -int(self)
 
 
 def initial_penalties() -> list[Penalty]:
