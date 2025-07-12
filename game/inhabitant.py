@@ -10,6 +10,7 @@ class Bourgeois(Inhabitant):
     def __init__(self, value: int, parity: Literal['odd', 'even']) -> None:
         self._value = value
         self.parity = parity
+        self.image_path = f"Cards/inhabitants/bourgeois/{value}_{parity}.png"
 
     @property
     def related_location(self) -> Optional[LocationType]:
@@ -34,6 +35,7 @@ class Elf(Inhabitant):
     def __init__(self, value: int, sequence_length: int) -> None:
         self.sequence_length = sequence_length
         self._value = value
+        self.image_path = f"Cards/inhabitants/elf/{value}.png"
 
     @property
     def related_location(self) -> LocationType:
@@ -72,6 +74,7 @@ class Dwarf(Inhabitant):
         self._value = value
         self.dice_value = dice_value
         self.dice_count = dice_count
+        self.image_path = f"Cards/inhabitants/dwarf/{dice_count}_{dice_value}_{value}.png"
 
     @property
     def related_location(self) -> LocationType:
@@ -98,6 +101,7 @@ class Gnome(Inhabitant):
         self.dice_color = dice_color
         self.dice_count = dice_count
         self._value = value
+        self.image_path = f"Cards/inhabitants/gnome/{dice_color}_{dice_count}_{value}.png"
 
     @property
     def related_location(self) -> LocationType:
@@ -150,6 +154,7 @@ class MushKobold(Inhabitant):
     def __init__(self, value: int, dice_count: int) -> None:
         self._value = value
         self.dice_count = dice_count
+        self.image_path = f"Cards/inhabitants/mushkobold/{dice_count}_{value}.png"
 
     @property
     def related_location(self) -> LocationType:
@@ -176,6 +181,7 @@ class Sorcerer(Inhabitant):
     def __init__(self, value: int, dice_colors: dict[DiceColor, int]) -> None:
         self._value = value
         self.dice_colors = dice_colors
+        
 
     @property
     def related_location(self) -> LocationType:
@@ -224,6 +230,7 @@ class Hypnotizer(Inhabitant):
     def __init__(self, value: int, max_dice_val: int) -> None:
         self._value = value
         self.max_dice_val = max_dice_val
+        self.image_path = f"Cards/inhabitants/hypnotizer/{max_dice_val}_{value}.png"
 
     @property
     def related_location(self) -> Optional[LocationType]:
@@ -248,6 +255,7 @@ class Dragon(Inhabitant):
     def __init__(self, value: int, min_dice_val: int) -> None:
         self._value = value
         self.min_dice_val = min_dice_val
+        self.image_path = f"Cards/inhabitants/dragon/{min_dice_val}_{value}.png"
 
     @property
     def related_location(self):
