@@ -127,6 +127,8 @@ class Orc(Inhabitant):
     def __init__(self, value: int, dice_sets: list[int]) -> None:
         self._value = value
         self.dice_sets = dice_sets
+        sets_str = "-".join(str(s) for s in self.dice_sets)
+        self.image_path = f"Cards/inhabitants/orc/{sets_str}_{value}.png"
 
     @property
     def related_location(self) -> LocationType:
