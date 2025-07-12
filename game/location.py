@@ -1,13 +1,14 @@
 from enum import Enum
 from typing import Literal
+from .card_types import LocationType
 
 
-class LocationType(Enum):
+'''class LocationType(Enum):
     CITY = 0
     MINE = 1
     WORKSHOP = 2
     ORCS_VILLAGE = 3
-    FOREST = 4
+    FOREST = 4'''
 
 
 class Location:
