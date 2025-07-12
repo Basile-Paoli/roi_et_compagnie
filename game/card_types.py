@@ -29,6 +29,7 @@ class Location(KingdomCard):
     def __init__(self, value: Literal[2, 3, 4] , location_type: LocationType):
         self._value = value
         self.location_type = location_type
+        self.image_path = f"Cards/locations/{location_type.name.lower()}/{value}.png"
 
     def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
