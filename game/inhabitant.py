@@ -35,7 +35,7 @@ class Elf(Inhabitant):
     def __init__(self, value: int, sequence_length: int) -> None:
         self.sequence_length = sequence_length
         self._value = value
-        self.image_path = f"Cards/inhabitants/elf/{value}.png"
+        self.image_path = f"Cards/inhabitants/elf/{sequence_length}_{value}.png"
 
     @property
     def related_location(self) -> LocationType:
