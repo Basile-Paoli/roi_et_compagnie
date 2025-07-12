@@ -5,6 +5,8 @@ from game.dice import get_dice, Die
 from game.inhabitant import Inhabitant, Elf, Dragon, Sorcerer, Hypnotizer, \
     initial_inhabitants, inhabitant_from_json
 
+import random
+
 
 class Kingdom(list[KingdomCard]):
 
@@ -105,6 +107,9 @@ class Game:
         self.current_player_index = 0
         self.die_roll = DieRollState()
         self.fill_shop()
+
+        random.shuffle(self.inhabitant_deck)
+        random.shuffle(self.penalty_deck)
 
     @property
     def player_count(self) -> int:
