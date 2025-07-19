@@ -1,6 +1,6 @@
 from game.gamestate import Game
 from interface.menu import show_menu
-from interface.game_screen import game_loop
+from interface.game_loop import game_loop
 
 def main():
     nb_joueurs = show_menu()
