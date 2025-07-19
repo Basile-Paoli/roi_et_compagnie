@@ -1,6 +1,7 @@
 import pygame
 from game.gamestate import Game
 from game.card_types import Location
+from .image_cache import get_card_image
 
 def draw_locations(state: Game, screen):
     font = pygame.font.SysFont(None, 24)
@@ -24,8 +25,7 @@ def draw_locations(state: Game, screen):
         for j, location in enumerate(slot.locations):
             if isinstance(location, Location):
                 try:
-                    image = pygame.image.load(location.image_path)
-                    image = pygame.transform.scale(image, (card_width, card_height))
+                    image = get_card_image(location.image_path, (card_width, card_height))
                     pos_x = x_offset + i * spacing_x
                     pos_y = y_offset + j * spacing_y
                     screen.blit(image, (pos_x, pos_y))

@@ -1,5 +1,6 @@
 from game.inhabitant import Inhabitant
 from game.gamestate import Game
+from .image_cache import get_card_image
 import pygame
 
 def draw_inhabitants(state: Game, screen):
@@ -28,8 +29,7 @@ def draw_inhabitants(state: Game, screen):
         rect = pygame.Rect(inhabitant_x, inhabitant_y, inhabitant_width, inhabitant_height)
         if hasattr(inhabitant, "image_path"):
             try:
-                img = pygame.image.load(inhabitant.image_path)
-                img = pygame.transform.scale(img, (inhabitant_width, inhabitant_height))
+                img = get_card_image(inhabitant.image_path, (inhabitant_width, inhabitant_height))
                 screen.blit(img, (inhabitant_x, inhabitant_y))
             except FileNotFoundError:
                 pygame.draw.rect(screen, (70, 70, 140), rect)

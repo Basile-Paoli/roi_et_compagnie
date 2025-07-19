@@ -1,7 +1,7 @@
 import pygame
 from game.card_types import Penalty
 from game.gamestate import Game
-
+from .image_cache import get_card_image
 import pygame
 from game.card_types import Penalty
 
@@ -31,8 +31,7 @@ def draw_penalty_deck(state: Game, screen, card_left_ratio=0.90):
         penalty = state.penalty_deck[-1]
         if hasattr(penalty, "image_path"):
             try:
-                image = pygame.image.load(penalty.image_path)
-                image = pygame.transform.scale(image, (penalty_width, penalty_height))
+                image = get_card_image(penalty.image_path, (penalty_width, penalty_height))
                 screen.blit(image, (penalty_x, penalty_y))
             except FileNotFoundError:
                 pygame.draw.rect(screen, (180, 0, 0), (penalty_x, penalty_y, penalty_width, penalty_height))
