@@ -5,7 +5,11 @@ from game.dice import get_dice, Die
 from game.inhabitant import Inhabitant, Elf, Dragon, Sorcerer, Hypnotizer, \
     initial_inhabitants, inhabitant_from_json
 
+import time
 import random
+import os
+
+random.seed(time.time_ns() ^ os.getpid())
 
 
 class Kingdom(list[KingdomCard]):
@@ -110,6 +114,8 @@ class Game:
 
         random.shuffle(self.inhabitant_deck)
         random.shuffle(self.penalty_deck)
+
+        print(f"[DEBUG] Deck partie : {[type(inh).__name__ for inh in self.inhabitant_deck[:5]]}")
 
     @property
     def player_count(self) -> int:
