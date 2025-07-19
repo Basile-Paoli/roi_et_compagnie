@@ -206,6 +206,11 @@ class Game:
             self.die_roll = DieRollState()
         else:
             self.next_player()
+    def take_penalty(self, target_player: Player) -> None:
+        if not self.penalty_deck:
+            raise ValueError("No penalties available to take.")
+        penalty = self.penalty_deck.pop()
+        target_player.kingdom.append(penalty)
 
     def matching_location(self, inhabitant) -> Optional[Location]:
         slot = next((loc for loc in self.shop if loc.type == inhabitant.related_location), None)
