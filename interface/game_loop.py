@@ -19,6 +19,10 @@ def game_loop(state: Game):
     running = True
 
     while running:
+
+        if state.game_over:
+            pygame.QUIT
+
         screen.fill((0, 100, 0))
 
         draw_locations(state, screen)
@@ -27,7 +31,7 @@ def game_loop(state: Game):
         draw_penalty_deck(state, screen)
         die_rects = draw_dice_status(state, screen, selected_dice_indices)
 
-        roll_dice_button_rect, next_turn_button_rect = draw_buttons(screen)
+        roll_dice_button_rect, next_turn_button_rect, save_button_rect = draw_buttons(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -53,7 +57,15 @@ def game_loop(state: Game):
 
                 elif next_turn_button_rect.collidepoint(mouse_pos):
                     print("⏭️ Tour suivant")
+                    #if state.can_take_inhabitant(state.penalty_deck[-1], state.current_player):
+                    #    state.take_inhabitant(state.penalty_deck[-1], state.current_player)
+                    # TODO : Take a penalty
+                    print("Should take a penalty, but dont have the methode to do it")
                     state.next_player()
+
+                elif save_button_rect.collidepoint(mouse_pos):
+                    # TODO : Save the game
+                    print("Should save the game, but rn no")
 
                 else:
                     for idx, rect in enumerate(die_rects):
