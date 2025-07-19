@@ -1,6 +1,7 @@
 import pygame
 from game.gamestate import Game
 from .draw_locations import draw_locations
+from .draw_inhabitants import draw_inhabitants
 from .draw_player_deck import draw_player_deck
 from .draw_penalty_deck import draw_penalty_deck
 
@@ -37,8 +38,8 @@ def game_loop(state: Game):
 
 
         screen.fill((0, 100, 0))
-
         draw_locations(state, screen)
+        draw_inhabitants(state, screen)
         draw_player_deck(state.current_player, screen)
         draw_penalty_deck(state, screen)
         draw_button(screen, roll_dice_button_rect, "Lancer les dés", font, (70, 130, 180))
