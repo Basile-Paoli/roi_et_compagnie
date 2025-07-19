@@ -4,69 +4,47 @@ import pygame
 
 def draw_inhabitants(state: Game, screen):
     font = pygame.font.SysFont(None, 20)
-    x_offset = 20
-    base_y = 30
-    spacing_x = 180
-    spacing_loc = 30
-    height_loc = 110  # hauteur de l'image location
-    y_inhabitant_offset = 20  # décalage sous la dernière location
+
+    width, height = screen.get_size()
+    card_left_ratio = 0.80
+    usable_width = width * card_left_ratio
+    shop_count = max(len(state.shop), 1)
+    spacing_ratio = 0.04
+    total_spacing = (shop_count + 1) * spacing_ratio * usable_width
+    card_width = int((usable_width - total_spacing) / shop_count)
+    card_height = int(card_width / 1.5)
+    x_offset = int(width * 0.02)
+    y_offset = int(height * 0.03)
+    spacing_x = card_width + int(spacing_ratio * usable_width)
+    spacing_y = int(card_height * 0.40)
+    y_inhabitant_offset = int(card_height * 0.12)
+
+    inhabitant_width = int(card_width * 0.70)
+    inhabitant_height = int(inhabitant_width * 1.4)
 
     for i, slot in enumerate(state.shop):
-        # Trouver la position Y pour l'habitant, sous la dernière carte location affichée
-        y_of_inhabitant = base_y + len(slot.locations) * spacing_loc + height_loc + y_inhabitant_offset
+        nb_locations = len(slot.locations)
+        inhabitant_x = x_offset + i * spacing_x + (card_width - inhabitant_width) // 2
+        if nb_locations > 0:
+            inhabitant_y = y_offset + (nb_locations - 1) * spacing_y + card_height + y_inhabitant_offset
+        else:
+            inhabitant_y = y_offset + card_height + y_inhabitant_offset
 
         inhabitant: Inhabitant | None = slot.inhabitant
         if inhabitant is not None and hasattr(inhabitant, "image_path"):
             try:
                 img = pygame.image.load(inhabitant.image_path)
-                img = pygame.transform.scale(img, (80, 110))
-                screen.blit(img, (x_offset + i * spacing_x + 45, y_of_inhabitant))  # léger centrage
+                img = pygame.transform.scale(img, (inhabitant_width, inhabitant_height))
+                screen.blit(img, (inhabitant_x, inhabitant_y))
             except FileNotFoundError:
-                pygame.draw.rect(screen, (70, 70, 140), (x_offset + i * spacing_x + 45, y_of_inhabitant, 80, 110))
+                pygame.draw.rect(screen, (70, 70, 140), (inhabitant_x, inhabitant_y, inhabitant_width, inhabitant_height))
                 err = font.render("Image ?", True, (255, 0, 0))
-                print(inhabitant.image_path)
-                screen.blit(err, (x_offset + i * spacing_x + 55, y_of_inhabitant + 40))
+                err_x = inhabitant_x + inhabitant_width // 8
+                err_y = inhabitant_y + inhabitant_height // 2 - 10
+                screen.blit(err, (err_x, err_y))
         elif inhabitant is not None:
-            # Pas d'image, juste une boîte
-            pygame.draw.rect(screen, (70, 70, 140), (x_offset + i * spacing_x + 45, y_of_inhabitant, 80, 110))
+            pygame.draw.rect(screen, (70, 70, 140), (inhabitant_x, inhabitant_y, inhabitant_width, inhabitant_height))
             label = font.render(f"{type(inhabitant).__name__}", True, (255, 255, 255))
-            screen.blit(label, (x_offset + i * spacing_x + 55, y_of_inhabitant + 40))
-
-
-
-def draw_inhabitants_2(state: Game, screen):
-    font = pygame.font.SysFont(None, 20)
-    x_offset = 20
-    y_offset = 230   # adapte ce Y pour bien placer la ligne sous les autres cartes si besoin
-    spacing_x = 180  # même espacement que le shop
-    card_width = 80
-    card_height = 110
-
-    font = pygame.font.SysFont(None, 20)
-    x_offset = 20
-    base_y = 30
-    spacing_x = 180
-    spacing_loc = 30
-    height_loc = 110  # hauteur de l'image location
-    y_inhabitant_offset = 20  # décalage sous la dernière location
-
-    for i, slot in enumerate(state.shop):
-        # Trouver la position Y pour l'habitant, sous la dernière carte location affichée
-        y_of_inhabitant = base_y + len(slot.locations) * spacing_loc + height_loc + y_inhabitant_offset
-
-        inhabitant: Inhabitant | None = slot.inhabitant
-        if inhabitant is not None and hasattr(inhabitant, "image_path"):
-            try:
-                img = pygame.image.load(inhabitant.image_path)
-                img = pygame.transform.scale(img, (80, 110))
-                screen.blit(img, (x_offset + i * spacing_x + 45, y_of_inhabitant))  # léger centrage
-            except FileNotFoundError:
-                pygame.draw.rect(screen, (70, 70, 140), (x_offset + i * spacing_x + 45, y_of_inhabitant, 80, 110))
-                err = font.render("Image ?", True, (255, 0, 0))
-                print(inhabitant.image_path)
-                screen.blit(err, (x_offset + i * spacing_x + 55, y_of_inhabitant + 40))
-        elif inhabitant is not None:
-            # Pas d'image, juste une boîte
-            pygame.draw.rect(screen, (70, 70, 140), (x_offset + i * spacing_x + 45, y_of_inhabitant, 80, 110))
-            label = font.render(f"{type(inhabitant).__name__}", True, (255, 255, 255))
-            screen.blit(label, (x_offset + i * spacing_x + 55, y_of_inhabitant + 40))
+            label_x = inhabitant_x + 10
+            label_y = inhabitant_y + inhabitant_height // 2 - 10
+            screen.blit(label, (label_x, label_y))

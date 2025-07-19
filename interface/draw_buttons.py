@@ -1,0 +1,20 @@
+from .utils import draw_button
+from game.gamestate import Game
+import pygame
+
+def draw_buttons(screen):
+    font = pygame.font.SysFont(None, 30)
+    width, height = screen.get_size()
+    btn_width, btn_height = 200, 50
+    margin = 20
+
+    # Position en bas à droite, par exemple
+    roll_dice_button_rect = pygame.Rect(
+        width - btn_width - margin, height - btn_height * 2 - margin * 2, btn_width, btn_height)
+    next_turn_button_rect = pygame.Rect(
+        width - btn_width - margin, height - btn_height - margin, btn_width, btn_height)
+
+    draw_button(screen, roll_dice_button_rect, "Lancer les dés", font, (70, 130, 180))
+    draw_button(screen, next_turn_button_rect, "Changer de tour", font, (180, 70, 80))
+    return roll_dice_button_rect, next_turn_button_rect
+    
