@@ -294,14 +294,15 @@ def initial_inhabitants() -> list[Inhabitant]:
         Elf(3, 5),
         Elf(1, 4),
         
-        Dwarf(10, 6, 5),
-        Dwarf(10, 1, 5),
+        Dwarf(10, 6, 6),
+        Dwarf(10, 4, 6),
+        Dwarf(10, 3, 6),
         Dwarf(6, 6, 4),
         Dwarf(6, 4, 4),
         Dwarf(6, 3, 4),
-        Dwarf(4, 4, 3),
+        Dwarf(4, 3, 4),
         Dwarf(4, 3, 3),
-        Dwarf(4, 1, 3),
+        Dwarf(3, 1, 4),
         
         Gnome(8, DiceColor.BLUE, 5), # 3 5 8        OK
         Gnome(8, DiceColor.BLUE, 4), # 3 5 3
