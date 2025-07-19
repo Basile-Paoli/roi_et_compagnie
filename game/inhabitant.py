@@ -101,7 +101,7 @@ class Gnome(Inhabitant):
         self.dice_color = dice_color
         self.dice_count = dice_count
         self._value = value
-        self.image_path = f"Cards/inhabitants/gnome/{dice_color}_{dice_count}_{value}.png"
+        self.image_path = f"Cards/inhabitants/gnome/{dice_color.to_json()}_{dice_count}_{value}.png"
 
     @property
     def related_location(self) -> LocationType:
@@ -303,12 +303,12 @@ def initial_inhabitants() -> list[Inhabitant]:
         Dwarf(4, 3, 3),
         Dwarf(4, 1, 3),
         
-        Gnome(8, DiceColor.BLUE, 6),
-        Gnome(3, DiceColor.BLUE, 5),
-        Gnome(3, DiceColor.RED, 5),
-        Gnome(2, DiceColor.RED, 4),
-        Gnome(2, DiceColor.GREEN, 4),
-        Gnome(1, DiceColor.GREEN, 3),
+        Gnome(8, DiceColor.BLUE, 5), # 3 5 8        OK
+        Gnome(8, DiceColor.BLUE, 4), # 3 5 3
+        Gnome(3, DiceColor.RED, 5), # 1 5 3         OK
+        Gnome(2, DiceColor.GREEN, 4), #2 4 2        OK
+        Gnome(2, DiceColor.RED, 4), # 1 4 2         OK
+        Gnome(1, DiceColor.GREEN, 3), # 2 3 1       OK
         
         Orc(7, [5]),
         Orc(3, [4]),
