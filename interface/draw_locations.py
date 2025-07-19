@@ -8,7 +8,7 @@ def draw_locations(state: Game, screen):
     x_offset = 20
     y_offset = 30
     spacing_x = 180
-    spacing_y = 60
+    spacing_y = 30
     label_y_offset = 40
 
     for i, slot in enumerate(state.shop):

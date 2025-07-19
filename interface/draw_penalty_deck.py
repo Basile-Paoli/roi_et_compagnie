@@ -5,7 +5,8 @@ from game.gamestate import Game
 import pygame
 from game.card_types import Penalty
 
-def draw_penalty_deck(state, screen, screen_width=1200, x_offset=50, y_offset=50):
+
+def draw_penalty_deck(state: Game, screen, screen_width=1200, x_offset=50, y_offset=50):
     """Affiche seulement la carte du dessus du deck de pénalités."""
     card_width, card_height = 110, 150
     pile_x = screen_width - x_offset - card_width  # Position à droite de l'écran
