@@ -110,10 +110,11 @@ class Game:
         self.players = [Player(i) for i in range(player_count)]
         self.current_player_index = 0
         self.die_roll = DieRollState()
-        self.fill_shop()
 
         random.shuffle(self.inhabitant_deck)
         random.shuffle(self.penalty_deck)
+
+        self.fill_shop()
 
         print(f"[DEBUG] Deck partie : {[type(inh).__name__ for inh in self.inhabitant_deck[:5]]}")
 
