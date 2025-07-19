@@ -28,6 +28,9 @@ class Bourgeois(Inhabitant):
             "value": self._value,
             "parity": self.parity
         }
+    
+    def __str__(self):
+        return f"Bourgeois(value={self._value}, parity='{self.parity}')"
 
 
 class Elf(Inhabitant):
@@ -67,6 +70,9 @@ class Elf(Inhabitant):
             "sequence_length": self.sequence_length
         }
 
+    def __str__(self):
+        return f"Elf(value={self._value}, sequence_length={self.sequence_length})"
+
 
 class Dwarf(Inhabitant):
 
@@ -94,6 +100,9 @@ class Dwarf(Inhabitant):
             "dice_count": self.dice_count
         }
 
+    def __str__(self):
+        return f"Dwarf(value={self._value}, dice_value={self.dice_value}, dice_count={self.dice_count})"
+
 
 class Gnome(Inhabitant):
 
@@ -120,6 +129,9 @@ class Gnome(Inhabitant):
             "dice_color": self.dice_color,
             "dice_count": self.dice_count
         }
+
+    def __str__(self):
+        return f"Gnome(value={self._value}, dice_color={self.dice_color}, dice_count={self.dice_count})"
 
 
 class Orc(Inhabitant):
@@ -149,6 +161,9 @@ class Orc(Inhabitant):
             "value": self._value,
             "dice_sets": self.dice_sets
         }
+    
+    def __str__(self):
+        return f"Orc(value={self._value}, dice_sets={self.dice_sets})"
 
 
 class MushKobold(Inhabitant):
@@ -176,6 +191,9 @@ class MushKobold(Inhabitant):
             "value": self._value,
             "dice_count": self.dice_count
         }
+    
+    def __str__(self):
+        return f"MushKobold(value={self._value}, dice_count={self.dice_count})"
 
 
 class Sorcerer(Inhabitant):
@@ -206,6 +224,10 @@ class Sorcerer(Inhabitant):
             "value": self._value,
             "dice_colors": {color.to_json(): count for color, count in self.dice_colors.items()}
         }
+    
+    def __str__(self):
+        colors_str = ", ".join(f"{color}: {count}" for color, count in self.dice_colors.items())
+        return f"Sorcerer(value={self._value}, dice_colors={{ {colors_str} }})"
 
 
 class Fairy(Inhabitant):
@@ -258,6 +280,9 @@ class Hypnotizer(Inhabitant):
             "value": self._value,
             "max_dice_val": self.max_dice_val
         }
+    
+    def __str__(self):
+        return f"Hypnotizer(value={self._value}, max_dice_val={self.max_dice_val})"
 
 
 class Dragon(Inhabitant):
@@ -283,6 +308,9 @@ class Dragon(Inhabitant):
             "value": self._value,
             "min_dice_val": self.min_dice_val
         }
+    
+    def __str__(self):
+        return f"Dragon(value={self._value}, min_dice_val={self.min_dice_val})"
 
 
 def initial_inhabitants() -> list[Inhabitant]:
