@@ -4,7 +4,7 @@ def show_menu():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     font = pygame.font.SysFont(None, 48)
-    options = [1, 2, 3, 4]
+    options = [2, 3, 4]
     selected = 0
     running = True
 
