@@ -14,6 +14,7 @@ def game_loop(state: Game):
     pygame.init()
     screen = pygame.display.set_mode((width_init, height_init), pygame.RESIZABLE)
     clock = pygame.time.Clock()
+    selected_dice_indices: list[int] = []
 
     running = True
 
@@ -24,7 +25,7 @@ def game_loop(state: Game):
         inhabitant_rects = draw_inhabitants(state, screen)
         draw_player_deck(state.current_player, screen)
         draw_penalty_deck(state, screen)
-        draw_dice_status(state, screen)
+        die_rects = draw_dice_status(state, screen, selected_dice_indices)
 
         roll_dice_button_rect, next_turn_button_rect = draw_buttons(screen)
 
@@ -36,22 +37,41 @@ def game_loop(state: Game):
 
 
                 if roll_dice_button_rect.collidepoint(mouse_pos):
-                    print("🎲 Lancer les dés")
+                    print("🎲 Lancer les dés sélectionnés")
                     if state.can_reroll():
-                        state.reroll(state.die_roll.dice)
+                        if selected_dice_indices:
+                            dice_to_reroll = [state.die_roll.dice[i] for i in selected_dice_indices]
+                        else:
+                            dice_to_reroll = state.die_roll.dice
+
+                        state.reroll(dice_to_reroll)
+                        selected_dice_indices.clear()
                     else:
                         print("❌ Nombre maximum de relances atteint")
+
+
 
                 elif next_turn_button_rect.collidepoint(mouse_pos):
                     print("⏭️ Tour suivant")
                     state.next_player()
-                    
+
                 else:
+                    for idx, rect in enumerate(die_rects):
+                        if rect.collidepoint(mouse_pos):
+                            if idx in selected_dice_indices:
+                                selected_dice_indices.remove(idx)
+                            else:
+                                selected_dice_indices.append(idx)
+                            break
+
                     for rect, inhabitant, slot_index in inhabitant_rects:
                         if rect.collidepoint(mouse_pos):
                             print(f"Habitant {inhabitant} cliqué dans le slot {slot_index}")
                             if state.can_take_inhabitant(inhabitant, state.current_player) :
+                                print("can take it !!")
                                 state.take_inhabitant(inhabitant, state.current_player)
+                            else :
+                                print("fait des trucs")
                             break
 
         pygame.display.flip()
