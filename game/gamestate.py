@@ -174,7 +174,7 @@ class Game:
             die.roll()
 
     def can_take_inhabitant(self, inhabitant: Inhabitant, player: Player) -> bool:
-        if not inhabitant.can_take(self.die_roll.dice):
+        if not inhabitant.can_take(die.currentResult for die in self.die_roll.dice):
             return False
         if isinstance(inhabitant, Dragon):
             return player.id != self.current_player.id
