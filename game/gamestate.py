@@ -78,6 +78,11 @@ class DieRollState:
         state.dice = [Die.from_json(die) for die in data["dice"]]
         state.nb_tries = data["nb_tries"]
         return state
+    
+    def __str__(self) -> str:
+        dice_str = ", ".join(str(die) for die in self.dice)
+        return f"DieRollState(nb_tries={self.nb_tries}, dice=[{dice_str}])"
+
 
 
 class ShopSlot:
