@@ -300,9 +300,9 @@ def initial_inhabitants() -> list[Inhabitant]:
         Dwarf(6, 6, 4),
         Dwarf(6, 4, 4),
         Dwarf(6, 3, 4),
-        Dwarf(4, 3, 4),
+        Dwarf(4, 4, 3),
         Dwarf(4, 3, 3),
-        Dwarf(3, 1, 4),
+        Dwarf(4, 1, 3),
         
         Gnome(8, DiceColor.BLUE, 5), # 3 5 8        OK
         Gnome(8, DiceColor.BLUE, 4), # 3 5 3
@@ -328,7 +328,7 @@ def initial_inhabitants() -> list[Inhabitant]:
         
         Fairy({DiceColor.RED: 3, DiceColor.BLUE: 2}),
         Fairy({DiceColor.RED: 2, DiceColor.GREEN: 3}),
-        Fairy({DiceColor.BLUE: 3, DiceColor.GREEN: 2}),
+        Fairy({DiceColor.GREEN: 2, DiceColor.BLUE: 2}), # n'existe pas
         Fairy({DiceColor.BLUE: 2, DiceColor.GREEN: 2}),
         Fairy({DiceColor.RED: 2, DiceColor.GREEN: 2}),
         
