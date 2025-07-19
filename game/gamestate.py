@@ -187,6 +187,11 @@ class Game:
             return player.id == self.current_player.id
 
     def take_inhabitant(self, inhabitant: Inhabitant, target_player: Player) -> None:
+        slot_with_inhabitant = next((slot for slot in self.shop if slot.inhabitant == inhabitant), None)
+        if not slot_with_inhabitant:
+            raise ValueError("Inhabitant not found in shop.")
+        slot_with_inhabitant.inhabitant = None
+
         location_to_take = self.matching_location(inhabitant)
         if location_to_take:
             self.take_location(location_to_take)
