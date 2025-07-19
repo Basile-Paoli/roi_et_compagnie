@@ -5,6 +5,7 @@ from .draw_inhabitants import draw_inhabitants
 from .draw_player_deck import draw_player_deck
 from .draw_penalty_deck import draw_penalty_deck
 from .draw_buttons import draw_buttons
+from .draw_dice_status import draw_dice_status
 
 width_init = 1920
 height_init = 1080
@@ -23,6 +24,7 @@ def game_loop(state: Game):
         inhabitant_rects = draw_inhabitants(state, screen)
         draw_player_deck(state.current_player, screen)
         draw_penalty_deck(state, screen)
+        draw_dice_status(state, screen)
 
         roll_dice_button_rect, next_turn_button_rect = draw_buttons(screen)
 
