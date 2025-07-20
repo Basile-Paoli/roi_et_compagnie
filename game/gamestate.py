@@ -107,6 +107,9 @@ class ShopSlot:
 
 
 class TargetNeededForDragonException(Exception):
+    def __init__(self, dragon: Dragon):
+        super().__init__(f"Target needed for Dragon")
+        self.dragon = dragon
     pass
 
 class Game:
@@ -236,7 +239,7 @@ class Game:
                 if not next_slot.inhabitant:
                     continue
                 if isinstance(next_slot.inhabitant, Dragon) :
-                    raise TargetNeededForDragonException()
+                    raise TargetNeededForDragonException(next_slot.inhabitant)
                 self.take_inhabitant(next_slot.inhabitant, self.current_player, end_turn=False)
 
     def fill_shop(self) -> None:
