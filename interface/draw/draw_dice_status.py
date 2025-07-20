@@ -43,13 +43,19 @@ def draw_dice_status(state: Game, screen, selected_dice):
         text_rect = text_surf.get_rect(center=rect.center)
         screen.blit(text_surf, text_rect)
 
-    
-    roll_font = pygame.font.SysFont(None, 22)
-    tries_text = roll_font.render(f"Relance : {state.die_roll.nb_tries}/3", True, (255, 255, 0))
-    screen.blit(tries_text, (start_x, y - 30))
+    # Label ("Royaume de Joueur X") sous la carte
+    big_title_font = pygame.font.SysFont(None, 48, bold=True)
+    label_text = f"Royaume de Joueur {state.current_player.id + 1}"
+    label_surf = big_title_font.render(label_text, True, (255, 255, 255))
+    label_rect = label_surf.get_rect(center=(width // 2, y - 85))
+    screen.blit(label_surf, label_rect)
 
     instruction_font = pygame.font.SysFont(None, 20)
     instruction = instruction_font.render("Cliquez sur les dés à relancer (aucun = tous)", True, (200, 200, 200))
     screen.blit(instruction, (start_x, y - 50))
+    
+    roll_font = pygame.font.SysFont(None, 22)
+    tries_text = roll_font.render(f"Relance : {state.die_roll.nb_tries}/3", True, (255, 255, 0))
+    screen.blit(tries_text, (start_x, y - 30))
 
     return die_rects
