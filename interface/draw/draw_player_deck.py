@@ -7,7 +7,7 @@ from game.gamestate import Player
 from .image_cache import get_card_image
 
 
-def draw_player_deck(player, screen):
+def draw_player_deck(player: Player, screen):
     width, height = screen.get_size()
 
     card_left_ratio = 0.20
@@ -22,7 +22,7 @@ def draw_player_deck(player, screen):
     if player.kingdom:
         card = player.kingdom[-1]
         if hasattr(card, "image_path"):
-            image = get_card_image(image, (card_width, card_height))
+            image = get_card_image(card.image_path, (card_width, card_height))
             screen.blit(image, (x, y))
         else:
             pygame.draw.rect(screen, (255, 0, 0), (x, y, card_width, card_height), 3)
