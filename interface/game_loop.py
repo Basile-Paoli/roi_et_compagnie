@@ -41,7 +41,6 @@ def game_loop(state: Game):
 
 
                 if roll_dice_button_rect.collidepoint(mouse_pos):
-                    print("🎲 Lancer les dés sélectionnés")
                     if state.can_reroll():
                         if selected_dice_indices:
                             dice_to_reroll = [state.die_roll.dice[i] for i in selected_dice_indices]
@@ -50,14 +49,11 @@ def game_loop(state: Game):
 
                         state.reroll(dice_to_reroll)
                         selected_dice_indices.clear()
-                    else:
-                        print("❌ Nombre maximum de relances atteint")
 
 
 
                 elif next_turn_button_rect.collidepoint(mouse_pos):
                     try:
-                        print("⏭️ Tour suivant")
                         state.take_penalty(state.current_player)
                         state.next_player()
                     except:
