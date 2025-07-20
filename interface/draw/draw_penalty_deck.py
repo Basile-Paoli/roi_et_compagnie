@@ -1,13 +1,10 @@
 import pygame
-from game.card_types import Penalty
 from game.gamestate import Game
 from .image_cache import get_card_image
 import pygame
-from game.card_types import Penalty
 
 
-def draw_penalty_deck(state: Game, screen, card_left_ratio=0.90):
-    """Dessine la carte de pénalité dans les 10% droits de l’écran, alignée en haut avec les locations."""
+def draw_penalty_deck(state: Game, screen, card_left_ratio=0.90) -> None:
     width, height = screen.get_size()
 
     shop_count = max(len(state.shop), 1)

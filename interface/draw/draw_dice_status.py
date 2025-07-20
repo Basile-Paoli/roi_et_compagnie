@@ -2,7 +2,7 @@ import pygame
 from game.gamestate import Game
 from game.dice import Die, DiceColor
 
-def draw_dice_status(state: Game, screen, selected_dice):
+def draw_dice_status(state: Game, screen, selected_dice) -> list[pygame.Rect]:
     font = pygame.font.SysFont(None, 26)
     width, height = screen.get_size()
 

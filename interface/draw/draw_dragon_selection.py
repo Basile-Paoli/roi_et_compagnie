@@ -1,8 +1,7 @@
 import pygame
-from typing import List, Tuple
 from game.gamestate import Player
 
-def draw_dragon_selection_overlay(screen: pygame.Surface, possible_targets: List[Player] ) -> List[Tuple[pygame.Rect, Player]]:
+def draw_dragon_selection_overlay(screen: pygame.Surface, possible_targets: list[Player] ) -> list[tuple[pygame.Rect, Player]]:
     width, height = screen.get_size()
 
     s = pygame.Surface((width, height), pygame.SRCALPHA)
@@ -17,7 +16,7 @@ def draw_dragon_selection_overlay(screen: pygame.Surface, possible_targets: List
     btn_w, btn_h = 230, 48
     spacing = 20
     start_y = 120
-    rects: List[Tuple[pygame.Rect, Player]] = []
+    rects: list[tuple[pygame.Rect, Player]] = []
     for i, p in enumerate(possible_targets):
         btn_x = width//2 - btn_w//2
         btn_y = start_y + i * (btn_h + spacing)

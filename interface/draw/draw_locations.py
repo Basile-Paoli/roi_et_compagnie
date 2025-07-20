@@ -3,7 +3,7 @@ from game.gamestate import Game
 from game.card_types import Location
 from .image_cache import get_card_image
 
-def draw_locations(state: Game, screen):
+def draw_locations(state: Game, screen) -> None:
     font = pygame.font.SysFont(None, 24)
 
     width, height = screen.get_size()

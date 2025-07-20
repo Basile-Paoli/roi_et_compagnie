@@ -3,12 +3,12 @@ from game.gamestate import Game
 from .image_cache import get_card_image
 import pygame
 
-def draw_inhabitants(state: Game, screen):
+def draw_inhabitants(state: Game, screen) -> list[tuple[pygame.Rect, Inhabitant, int]]:
     font = pygame.font.SysFont(None, 20)
     width, height = screen.get_size()
     count = len(state.inhabitants_displayed)
     if count == 0:
-        return
+        return []
 
     card_left_ratio = 0.80
     usable_width = width * card_left_ratio

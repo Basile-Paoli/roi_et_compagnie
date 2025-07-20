@@ -1,8 +1,8 @@
 import pygame
 
-_image_cache = {}
+_image_cache: dict[tuple[int, int], pygame.Surface] = {}
 
-def get_card_image(path, size):
+def get_card_image(path, size) -> pygame.Surface:
     key = (path, size)
     if key not in _image_cache:
         try:

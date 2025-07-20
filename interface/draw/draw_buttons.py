@@ -1,8 +1,9 @@
 from .utils import draw_button
 from game.gamestate import Game
+
 import pygame
 
-def draw_buttons(screen):
+def draw_buttons(screen) -> tuple[pygame.Rect, pygame.Rect, pygame.Rect]:
     font = pygame.font.SysFont(None, 30)
     width, height = screen.get_size()
     btn_width, btn_height = 200, 50
