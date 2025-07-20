@@ -1,11 +1,14 @@
 import pygame
 from game.gamestate import Game
-from .draw_locations import draw_locations
-from .draw_inhabitants import draw_inhabitants
-from .draw_player_deck import draw_player_deck
-from .draw_penalty_deck import draw_penalty_deck
-from .draw_buttons import draw_buttons
-from .draw_dice_status import draw_dice_status
+
+from .draw.draw_locations import draw_locations
+from .draw.draw_inhabitants import draw_inhabitants
+from .draw.draw_player_deck import draw_player_deck
+from .draw.draw_penalty_deck import draw_penalty_deck
+from .draw.draw_buttons import draw_buttons
+from .draw.draw_dice_status import draw_dice_status
+
+from .game_result import game_result
 
 width_init = 1920
 height_init = 1080
