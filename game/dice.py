@@ -40,7 +40,7 @@ class Die(list[DieResult]):
     @staticmethod
     def from_json(data: dict) -> "Die":
         die = Die((tuple(d) for d in data["die"]))
-        die.currentResult = tuple(data["currentResult"])
+        die.currentResult = (data["currentResult"][0], DiceColor.from_json(data["currentResult"][1]))
         return die
 
 
