@@ -27,11 +27,8 @@ def draw_penalty_deck(state: Game, screen, card_left_ratio=0.90) -> None:
     if len(state.penalty_deck) > 0:
         penalty = state.penalty_deck[-1]
         if hasattr(penalty, "image_path"):
-            try:
-                image = get_card_image(penalty.image_path, (penalty_width, penalty_height))
-                screen.blit(image, (penalty_x, penalty_y))
-            except FileNotFoundError:
-                pygame.draw.rect(screen, (180, 0, 0), (penalty_x, penalty_y, penalty_width, penalty_height))
+            image = get_card_image(penalty.image_path, (penalty_width, penalty_height))
+            screen.blit(image, (penalty_x, penalty_y))
         else:
             pygame.draw.rect(screen, (180, 0, 0), (penalty_x, penalty_y, penalty_width, penalty_height))
     else:

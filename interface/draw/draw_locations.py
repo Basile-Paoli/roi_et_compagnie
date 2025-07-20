@@ -24,13 +24,10 @@ def draw_locations(state: Game, screen) -> None:
     for i, slot in enumerate(state.shop):
         for j, location in enumerate(slot.locations):
             if isinstance(location, Location):
-                try:
-                    image = get_card_image(location.image_path, (card_width, card_height))
-                    pos_x = x_offset + i * spacing_x
-                    pos_y = y_offset + j * spacing_y
-                    screen.blit(image, (pos_x, pos_y))
-                except FileNotFoundError:
-                    print(f"Image non trouvée : {location.image_path}")
+                image = get_card_image(location.image_path, (card_width, card_height))
+                pos_x = x_offset + i * spacing_x
+                pos_y = y_offset + j * spacing_y
+                screen.blit(image, (pos_x, pos_y))
 
         label = font.render(slot.type.name, True, (255, 255, 255))
         if len(slot.locations) > 0:

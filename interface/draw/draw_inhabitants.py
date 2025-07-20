@@ -28,13 +28,8 @@ def draw_inhabitants(state: Game, screen) -> list[tuple[pygame.Rect, Inhabitant,
         inhabitant_y = y_offset
         rect = pygame.Rect(inhabitant_x, inhabitant_y, inhabitant_width, inhabitant_height)
         if hasattr(inhabitant, "image_path"):
-            try:
-                img = get_card_image(inhabitant.image_path, (inhabitant_width, inhabitant_height))
-                screen.blit(img, (inhabitant_x, inhabitant_y))
-            except FileNotFoundError:
-                pygame.draw.rect(screen, (70, 70, 140), rect)
-                err = font.render("Image ?", True, (255, 0, 0))
-                screen.blit(err, (inhabitant_x + 5, inhabitant_y + inhabitant_height // 2 - 10))
+            img = get_card_image(inhabitant.image_path, (inhabitant_width, inhabitant_height))
+            screen.blit(img, (inhabitant_x, inhabitant_y))
         else:
             pygame.draw.rect(screen, (70, 70, 140), rect)
             label = font.render(f"{type(inhabitant).__name__}", True, (255, 255, 255))

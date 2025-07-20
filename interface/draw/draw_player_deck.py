@@ -22,12 +22,8 @@ def draw_player_deck(player, screen):
     if player.kingdom:
         card = player.kingdom[-1]
         if hasattr(card, "image_path"):
-            try:
-                image = pygame.image.load(card.image_path)
-                image = pygame.transform.scale(image, (card_width, card_height))
-                screen.blit(image, (x, y))
-            except FileNotFoundError:
-                pygame.draw.rect(screen, (255, 0, 0), (x, y, card_width, card_height), 3)  # error border
+            image = get_card_image(image, (card_width, card_height))
+            screen.blit(image, (x, y))
         else:
             pygame.draw.rect(screen, (255, 0, 0), (x, y, card_width, card_height), 3)
     else:
