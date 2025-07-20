@@ -1,5 +1,7 @@
 import pygame
-from game.gamestate import Game
+from typing import Tuple
+
+from game.gamestate import Game, Dragon, Player
 
 from .draw.draw_locations import draw_locations
 from .draw.draw_inhabitants import draw_inhabitants
@@ -7,6 +9,8 @@ from .draw.draw_player_deck import draw_player_deck
 from .draw.draw_penalty_deck import draw_penalty_deck
 from .draw.draw_buttons import draw_buttons
 from .draw.draw_dice_status import draw_dice_status
+from .draw.draw_dragon_selection import draw_dragon_selection_overlay
+
 
 from .game_result import game_result
 
@@ -18,6 +22,8 @@ def game_loop(state: Game):
     screen = pygame.display.set_mode((width_init, height_init), pygame.RESIZABLE)
     clock = pygame.time.Clock()
     selected_dice_indices: list[int] = []
+    dragon_selection = None
+    dragon_selection_rects: list[Tuple[pygame.Rect, Player]] = []
 
     running = True
 
@@ -36,6 +42,15 @@ def game_loop(state: Game):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif dragon_selection and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                pos = pygame.mouse.get_pos()
+                for rect, p in dragon_selection_rects:
+                    if rect.collidepoint(pos):
+                        state.take_inhabitant(dragon_selection[0], p)
+                        dragon_selection = None
+                        break
+                continue
+
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
 
@@ -77,7 +92,23 @@ def game_loop(state: Game):
                             print(f"Habitant {inhabitant} cliqué dans le slot {slot_index}")
                             if state.can_take_inhabitant(inhabitant, state.current_player) :
                                 state.take_inhabitant(inhabitant, state.current_player)
+                            elif isinstance(inhabitant, Dragon):
+                                other_players = [p for p in state.players if p.id != state.current_player.id]
+                                if len(other_players) == 1:
+                                    target = other_players[0]
+                                    state.take_inhabitant(inhabitant, target)
+                                else:
+                                    dragon_selection = (inhabitant, other_players)
+                                break
                             break
+        
+
+        if dragon_selection:
+            inhabitant, possible_targets = dragon_selection
+            dragon_selection_rects = draw_dragon_selection_overlay(screen, possible_targets)
+        else:
+            dragon_selection_rects = []
+        
         
         if state.game_over:
             game_result(state)
