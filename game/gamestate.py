@@ -35,10 +35,7 @@ def card_from_json(data: dict | int) -> KingdomCard:
         return Penalty(data)
     if data["type"] == "location":
         return Location.from_json(data)
-    elif data["type"] == "inhabitant":
-        return inhabitant_from_json(data)
-    else:
-        raise ValueError(f"Unknown card type: {data['type']}")
+    return inhabitant_from_json(data)
 
 
 class Player:
