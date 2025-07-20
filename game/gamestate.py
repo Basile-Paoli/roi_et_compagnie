@@ -114,6 +114,19 @@ class TargetNeededForDragonException(Exception):
 
 class Game:
 
+    """ def __init__(self, player_count: int) -> None:
+        self.inhabitant_deck: list[Inhabitant] = initial_inhabitants()
+        self.penalty_deck: list[Penalty] = initial_penalties()
+        self.shop = [ShopSlot(locations) for locations in get_initial_locations()]
+        self.players = [Player(i) for i in range(player_count)]
+        self.current_player_index = 0
+        self.die_roll = DieRollState()
+
+        random.shuffle(self.inhabitant_deck)
+        random.shuffle(self.penalty_deck)
+
+        self.fill_shop() """
+    
     def __init__(self, player_count: int) -> None:
         self.inhabitant_deck: list[Inhabitant] = initial_inhabitants()
         self.penalty_deck: list[Penalty] = initial_penalties()
@@ -125,7 +138,32 @@ class Game:
         random.shuffle(self.inhabitant_deck)
         random.shuffle(self.penalty_deck)
 
-        self.fill_shop()
+        # ---- DEBUG (force Hypnotizer + Dragon dans la boutique) ----
+        # Récupère premier Hypnotizer et premier Dragon du deck et les retire
+        hypo_idx = next(i for i,v in enumerate(self.inhabitant_deck) if isinstance(v, Hypnotizer))
+        dragon_idx = next(i for i,v in enumerate(self.inhabitant_deck) if isinstance(v, Dragon))
+        hypo = self.inhabitant_deck.pop(hypo_idx)
+        # Attention, si dragon_idx > hypo_idx on a enlevé un élément donc l'index dragon change de -1
+        if dragon_idx > hypo_idx:
+            dragon_idx -= 1
+        dragon = self.inhabitant_deck.pop(dragon_idx)
+
+        # Instancie la shop, mais NE REMPLIT PAS TOUT DE SUITE LES habitants
+        self.fill_shop()  # OU: tu peux commenter cette ligne, et mettre manuellement les habitants
+
+        # --- Place Hypnotizer et Dragon à la position souhaitée dans self.shop
+        # Supposons que tu veux Hypnotizer au slot 1, Dragon au slot 2 (indices 0 et 1)
+        self.shop[0].inhabitant = hypo
+        self.shop[1].inhabitant = dragon
+
+        # Ensuite, on complète les autres slots normalement (effet de shop sans remplir les deux premiers)
+        for i, slot in enumerate(self.shop):
+            if slot.inhabitant is None:
+                if self.inhabitant_deck:
+                    slot.inhabitant = self.inhabitant_deck.pop()
+                else:
+                    slot.inhabitant = None
+
 
     @property
     def player_count(self) -> int:
