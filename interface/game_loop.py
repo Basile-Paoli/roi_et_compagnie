@@ -1,6 +1,8 @@
 import pygame
 
 from game.gamestate import Game, Dragon, Player, TargetNeededForDragonException
+from .gamestate_manager import save_gamestate, delete_save
+from .menu import menu
 
 from .draw.draw_locations import draw_locations
 from .draw.draw_inhabitants import draw_inhabitants
@@ -105,8 +107,9 @@ def game_loop(state: Game):
                         print("next turn error")
 
                 elif save_button_rect.collidepoint(mouse_pos):
-                    # TODO : Save the game
-                    print("Should save the game, but rn no")
+                    save_gamestate(state.to_json())
+                    running = False
+                    menu()
 
                 else:
                     for idx, rect in enumerate(die_rects):
@@ -145,7 +148,7 @@ def game_loop(state: Game):
             inhabitant, possible_targets = dragon_selection
             dragon_selection_rects = draw_dragon_selection_overlay(screen, possible_targets)
         else:
-            dragon_selection_rects = []
+            dragon_selection_rects = [] 
         
         # --- CHECK SI GAME OVER ---
         if state.game_over:

@@ -14,6 +14,7 @@ def menu() -> int:
         menu_options.append(("Reprendre la partie", -1))
     for nb in options:
         menu_options.append((f"{nb} joueur{'s' if nb > 1 else ''}", nb))
+    menu_options.append(("Quitter le jeu", -2))
 
     selected = 0
     running = True

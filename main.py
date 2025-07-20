@@ -13,15 +13,17 @@ def print_inhabitant_images(initial_inhabitants):
         print(f"{path} - {'OK' if exists else 'MANQUANTE'}")
 
 def main():
-    
-    choice = menu()
-    if choice == -1:
-        state = Game(1).from_json(load_gamestate())
-    elif choice in (2, 3, 4):
-        state = Game(choice)
-    
-    print_inhabitant_images(state.inhabitant_deck)
-    game_loop(state)
+    while True :
+        choice = menu()
+        if choice == -1:
+            state = Game(1).from_json(load_gamestate())
+        elif choice in (2, 3, 4):
+            state = Game(choice)
+        else :
+            break
+        
+        print_inhabitant_images(state.inhabitant_deck)
+        game_loop(state)
 
 if __name__ == "__main__":
     main()

@@ -168,9 +168,10 @@ class Game:
         self.die_roll = DieRollState()
 
     def can_reroll(self) -> bool:
-        has_elf = isinstance(self.current_player.kingdom[-1], Elf) if self.current_player.kingdom else False
+        """ has_elf = isinstance(self.current_player.kingdom[-1], Elf) if self.current_player.kingdom else False
         max_rolls = 4 if has_elf else 3
-        return self.die_roll.nb_tries < max_rolls
+        return self.die_roll.nb_tries < max_rolls """
+        return True
 
     def reroll(self, dice: Iterable[Die]) -> None:
         if not self.can_reroll():
@@ -208,7 +209,7 @@ class Game:
             self.die_roll = DieRollState()
         elif end_turn:
             self.next_player()
-            
+
     def take_penalty(self, target_player: Player) -> None:
         if not self.penalty_deck:
             raise ValueError("No penalties available to take.")
