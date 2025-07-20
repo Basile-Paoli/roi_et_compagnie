@@ -121,8 +121,6 @@ class Game:
 
         self.fill_shop()
 
-        print(f"[DEBUG] Deck partie : {[type(inh).__name__ for inh in self.inhabitant_deck[:5]]}")
-
     @property
     def player_count(self) -> int:
         return len(self.players)
