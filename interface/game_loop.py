@@ -1,5 +1,4 @@
 import pygame
-from typing import Tuple
 
 from game.gamestate import Game, Dragon, Player, TargetNeededForDragonException
 
@@ -10,6 +9,7 @@ from .draw.draw_penalty_deck import draw_penalty_deck
 from .draw.draw_buttons import draw_buttons
 from .draw.draw_dice_status import draw_dice_status
 from .draw.draw_dragon_selection import draw_dragon_selection_overlay
+from .draw.draw_player_switch import draw_player_switch_overlay
 
 
 from .game_result import game_result
@@ -21,27 +21,61 @@ def game_loop(state: Game):
     pygame.init()
     screen = pygame.display.set_mode((width_init, height_init), pygame.RESIZABLE)
     clock = pygame.time.Clock()
+    
     selected_dice_indices: list[int] = []
+    
     dragon_selection = None
-    dragon_selection_rects: list[Tuple[pygame.Rect, Player]] = []
+    dragon_selection_rects: list[tuple[pygame.Rect, Player]] = []
+
+    displayed_player_id = state.current_player.id
+    player_switch_mode = False
+    player_switch_timer = 0
+    TITLE_DISPLAY_MS = 1000  
 
     running = True
 
     while running:
 
+        # --- DETECTION DU CHANGEMENT DE JOUEUR ---
+        if state.current_player.id != displayed_player_id and not player_switch_mode:
+            player_switch_mode = True
+            player_switch_timer = pygame.time.get_ticks()
+            displayed_player_id = state.current_player.id
+
         screen.fill((0, 100, 0))
 
+        # --- DESSIN DES ÉLÉMENTS ---
         draw_locations(state, screen)
-        inhabitant_rects = draw_inhabitants(state, screen)
         draw_player_deck(state.current_player, screen)
         draw_penalty_deck(state, screen)
+        
+        # --- DESSIN DES ÉLÉMENTS INTÉRATIF ---
+        inhabitant_rects = draw_inhabitants(state, screen)
         die_rects = draw_dice_status(state, screen, selected_dice_indices)
-
         roll_dice_button_rect, next_turn_button_rect, save_button_rect = draw_buttons(screen)
 
+        if player_switch_mode:
+            now = pygame.time.get_ticks()
+            # On ignore tout sauf quitter :
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+            # APPEL de la fonction d'affichage externe
+            draw_player_switch_overlay(screen, state.current_player.id)
+
+            pygame.display.flip()
+            clock.tick(60)
+
+            if now - player_switch_timer > TITLE_DISPLAY_MS:
+                player_switch_mode = False
+            continue    # RECOMMENCE la boucle (ignore tout le reste)
+
+        # --- ÉVÈNEMENTS PYGAME ---
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
             elif dragon_selection and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 pos = pygame.mouse.get_pos()
                 for rect, p in dragon_selection_rects:
@@ -53,8 +87,6 @@ def game_loop(state: Game):
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-
-
                 if roll_dice_button_rect.collidepoint(mouse_pos):
                     if state.can_reroll():
                         if selected_dice_indices:
@@ -64,8 +96,6 @@ def game_loop(state: Game):
 
                         state.reroll(dice_to_reroll)
                         selected_dice_indices.clear()
-
-
 
                 elif next_turn_button_rect.collidepoint(mouse_pos):
                     try:
@@ -109,6 +139,7 @@ def game_loop(state: Game):
                             break
 
         
+        # --- QUAND ON SÉLECTIONNE UN JOUEUR ---
 
         if dragon_selection:
             inhabitant, possible_targets = dragon_selection
@@ -116,7 +147,7 @@ def game_loop(state: Game):
         else:
             dragon_selection_rects = []
         
-        
+        # --- CHECK SI GAME OVER ---
         if state.game_over:
             game_result(state)
             running = False
