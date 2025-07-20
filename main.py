@@ -1,7 +1,9 @@
 from game.gamestate import Game
-from interface.menu import show_menu
+from interface.menu import menu
 from interface.game_loop import game_loop
 import os
+
+from interface.gamestate_manager import load_gamestate
 
 
 def print_inhabitant_images(initial_inhabitants):
@@ -12,8 +14,12 @@ def print_inhabitant_images(initial_inhabitants):
 
 def main():
     
-    nb_joueurs = show_menu()
-    state = Game(nb_joueurs)
+    choice = menu()
+    if choice == -1:
+        state = Game(1).from_json(load_gamestate())
+    elif choice in (2, 3, 4):
+        state = Game(choice)
+    
     print_inhabitant_images(state.inhabitant_deck)
     game_loop(state)
 
