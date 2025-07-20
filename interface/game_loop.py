@@ -1,7 +1,7 @@
 import pygame
 from typing import Tuple
 
-from game.gamestate import Game, Dragon, Player
+from game.gamestate import Game, Dragon, Player, TargetNeededForDragonException
 
 from .draw.draw_locations import draw_locations
 from .draw.draw_inhabitants import draw_inhabitants
@@ -90,17 +90,24 @@ def game_loop(state: Game):
                     for rect, inhabitant, slot_index in inhabitant_rects:
                         if rect.collidepoint(mouse_pos):
                             print(f"Habitant {inhabitant} cliqué dans le slot {slot_index}")
-                            if state.can_take_inhabitant(inhabitant, state.current_player) :
-                                state.take_inhabitant(inhabitant, state.current_player)
+                            actual_dragon = None
+                            if state.can_take_inhabitant(inhabitant, state.current_player):
+                                try:
+                                    state.take_inhabitant(inhabitant, state.current_player)
+                                except TargetNeededForDragonException as exc:
+                                    actual_dragon = exc.dragon
                             elif isinstance(inhabitant, Dragon):
+                                actual_dragon = inhabitant
+
+                            if actual_dragon:
                                 other_players = [p for p in state.players if p.id != state.current_player.id]
                                 if len(other_players) == 1:
                                     target = other_players[0]
-                                    state.take_inhabitant(inhabitant, target)
+                                    state.take_inhabitant(actual_dragon, target)
                                 else:
-                                    dragon_selection = (inhabitant, other_players)
-                                break
+                                    dragon_selection = (actual_dragon, other_players)
                             break
+
         
 
         if dragon_selection:
