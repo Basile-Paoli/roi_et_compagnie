@@ -109,7 +109,7 @@ def game_loop(state: Game):
                 elif save_button_rect.collidepoint(mouse_pos):
                     save_gamestate(state.to_json())
                     running = False
-                    menu()
+                    
 
                 else:
                     for idx, rect in enumerate(die_rects):
