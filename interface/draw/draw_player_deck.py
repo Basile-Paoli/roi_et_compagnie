@@ -1,7 +1,10 @@
 import pygame
+import collections
+
 from game.card_types import Location, Penalty
 from game.inhabitant import Inhabitant
 from game.gamestate import Player
+
 
 def draw_player_deck(player, screen):
     width, height = screen.get_size()
@@ -33,8 +36,37 @@ def draw_player_deck(player, screen):
         # Deck vide : rectangle vide
         pygame.draw.rect(screen, (200, 200, 200), (x, y, card_width, card_height), 3)      # Bord gris clair[1][2][9]
 
-    # Label ("Royaume de Joueur X") sous la carte
-    font = pygame.font.SysFont(None, 22)
-    label = font.render(f"Royaume de Joueur {player.id + 1}", True, (255, 255, 255))
-    label_rect = label.get_rect(midtop=(x + card_width // 2, y + card_height + 6))
-    screen.blit(label, label_rect)
+    font = pygame.font.SysFont(None, 24)
+    line_height = font.get_linesize()
+
+    # On compte chaque type de carte
+    card_counter = collections.Counter()
+
+    for card in player.kingdom:
+        if isinstance(card, Inhabitant):
+            card_type = type(card).__name__  # Par exemple "Gnome"
+        elif isinstance(card, Location):
+            card_type = type(card).__name__  # OU card.name si tu préfères le nom du lieu
+        elif isinstance(card, Penalty):
+            card_type = "Malus"
+        else:
+            card_type = "Carte inconnue"
+        card_counter[card_type] += 1
+
+    # On trie dans l'ordre alphabétique pour l'affichage
+    card_lines = [f"{count} {name}{'s' if count>1 and not name.endswith('s') else ''}" for name, count in sorted(card_counter.items())]
+
+    # Position du texte (à droite du deck)
+    text_x = x + card_width + 18
+    text_y = y
+
+    # Affichage de chaque ligne (chaque type de carte)
+    for i, line in enumerate(card_lines):
+        text_surf = font.render(line, True, (255, 255, 255))
+        screen.blit(text_surf, (text_x, text_y + i * line_height))
+    
+    # Total des points (juste après la liste)
+    total_points = player.kingdom.total_value() if hasattr(player.kingdom, "total_value") else 0
+    points_line = f"Points : {total_points}"
+    text_surf = font.render(points_line, True, (255, 215, 0))
+    screen.blit(text_surf, (text_x, text_y + len(card_lines) * line_height + 8))
