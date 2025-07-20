@@ -17,7 +17,7 @@ def draw_inhabitants(state: Game, screen):
     card_width = int((usable_width - total_spacing) / count)
     card_height = int(card_width / 1.5)
     x_offset = int(width * 0.02)
-    y_offset = int(height * 0.3)              # adapte selon ton interface
+    y_offset = int(height * 0.3)
     inhabitant_width = int(card_width * 0.70)
     inhabitant_height = int(inhabitant_width * 1.4)
     spacing_x = card_width + int(spacing_ratio * usable_width)

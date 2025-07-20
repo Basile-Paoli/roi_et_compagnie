@@ -3,13 +3,8 @@ from typing import List, Tuple
 from game.gamestate import Player
 
 def draw_dragon_selection_overlay(screen: pygame.Surface, possible_targets: List[Player] ) -> List[Tuple[pygame.Rect, Player]]:
-    """
-    Dessine la surimpression de sélection du joueur à qui donner le dragon.
-    Retourne la liste des tuples (rect, Player) pour la détection du clic.
-    """
     width, height = screen.get_size()
 
-    # Assombrir le fond
     s = pygame.Surface((width, height), pygame.SRCALPHA)
     s.fill((0,0,0,180))
     screen.blit(s,(0,0))

@@ -12,7 +12,6 @@ def get_card_image(path, size):
             _image_cache[key] = image
         except FileNotFoundError:
             print(f"Image non trouvée : {path}")
-            # Image de secours :
             surf = pygame.Surface(size)
             surf.fill((255, 0, 0))
             _image_cache[key] = surf

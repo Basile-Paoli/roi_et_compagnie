@@ -8,7 +8,6 @@ def draw_buttons(screen):
     btn_width, btn_height = 200, 50
     margin = 20
 
-    # Position en bas à droite, par exemple
     roll_dice_button_rect = pygame.Rect(
         width - btn_width - margin, height - btn_height * 3 - margin * 3, btn_width, btn_height)
     next_turn_button_rect = pygame.Rect(

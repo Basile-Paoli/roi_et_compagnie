@@ -43,7 +43,6 @@ def draw_dice_status(state: Game, screen, selected_dice):
         text_rect = text_surf.get_rect(center=rect.center)
         screen.blit(text_surf, text_rect)
 
-    # Label ("Royaume de Joueur X") sous la carte
     big_title_font = pygame.font.SysFont(None, 48, bold=True)
     label_text = f"Royaume de Joueur {state.current_player.id + 1}"
     label_surf = big_title_font.render(label_text, True, (255, 255, 255))

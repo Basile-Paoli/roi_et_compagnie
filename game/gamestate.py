@@ -211,6 +211,7 @@ class Game:
             self.die_roll = DieRollState()
         elif end_turn:
             self.next_player()
+            
     def take_penalty(self, target_player: Player) -> None:
         if not self.penalty_deck:
             raise ValueError("No penalties available to take.")
