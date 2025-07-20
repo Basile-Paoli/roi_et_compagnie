@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Any
 
 def save_gamestate(state_json: dict, filename: str = "gamestate.json"):
@@ -9,3 +10,10 @@ def save_gamestate(state_json: dict, filename: str = "gamestate.json"):
 def load_gamestate(filename: str = "gamestate.json") -> dict[str, Any]:
     with open(filename, "r", encoding="utf-8") as f:
         return json.load(f)
+    
+def delete_save(filename: str = "gamestate.json") -> None:
+    try:
+        os.remove(filename)
+        print(f"Sauvegarde '{filename}' supprimée.")
+    except FileNotFoundError:
+        print(f"Aucune sauvegarde '{filename}' à supprimer.")

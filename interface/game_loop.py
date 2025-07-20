@@ -151,6 +151,7 @@ def game_loop(state: Game):
         if state.game_over:
             game_result(state)
             running = False
+            delete_save()
 
         pygame.display.flip()
         clock.tick(60)
