@@ -18,6 +18,6 @@ def draw_buttons(screen) -> tuple[pygame.Rect, pygame.Rect, pygame.Rect]:
 
     draw_button(screen, roll_dice_button_rect, "Lancer les dés", font, (70, 130, 180))
     draw_button(screen, next_turn_button_rect, "Changer de tour", font, (180, 70, 80))
-    draw_button(screen, save_button_rect, "Sauvegarder", font, (0, 255, 0))
+    draw_button(screen, save_button_rect, "Save & Quit", font, (0, 255, 0))
     return roll_dice_button_rect, next_turn_button_rect, save_button_rect
     
