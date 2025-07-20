@@ -10,7 +10,7 @@ def show_menu():
 
     while running:
         screen.fill((30, 30, 30))
-        title = font.render("Sélection du nombre de joueurs", True, (255, 255, 255))
+        title = font.render("Sélection du nombre de joueurs", True, (255, 255, 0))
         screen.blit(title, (100, 100))
 
         for i, nb in enumerate(options):
