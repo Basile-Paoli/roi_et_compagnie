@@ -32,7 +32,7 @@ def draw_player_deck(player: Player, screen):
     font = pygame.font.SysFont(None, 24)
     line_height = font.get_linesize()
 
-    card_counter = collections.Counter()
+    card_counter: collections.Counter[str] = collections.Counter()
 
     for card in player.kingdom:
         if isinstance(card, Inhabitant):
