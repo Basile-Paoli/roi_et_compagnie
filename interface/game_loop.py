@@ -23,9 +23,6 @@ def game_loop(state: Game):
 
     while running:
 
-        if state.game_over:
-            pygame.QUIT
-
         screen.fill((0, 100, 0))
 
         draw_locations(state, screen)
@@ -59,12 +56,12 @@ def game_loop(state: Game):
 
 
                 elif next_turn_button_rect.collidepoint(mouse_pos):
-                    print("⏭️ Tour suivant")
-                    #if state.can_take_inhabitant(state.penalty_deck[-1], state.current_player):
-                    #    state.take_inhabitant(state.penalty_deck[-1], state.current_player)
-                    # TODO : Take a penalty
-                    print("Should take a penalty, but dont have the methode to do it")
-                    state.next_player()
+                    try:
+                        print("⏭️ Tour suivant")
+                        state.take_penalty(state.current_player)
+                        state.next_player()
+                    except:
+                        print("next turn error")
 
                 elif save_button_rect.collidepoint(mouse_pos):
                     # TODO : Save the game
@@ -83,11 +80,12 @@ def game_loop(state: Game):
                         if rect.collidepoint(mouse_pos):
                             print(f"Habitant {inhabitant} cliqué dans le slot {slot_index}")
                             if state.can_take_inhabitant(inhabitant, state.current_player) :
-                                print("can take it !!")
                                 state.take_inhabitant(inhabitant, state.current_player)
-                            else :
-                                print("fait des trucs")
                             break
+        
+        if state.game_over:
+            game_result(state)
+            running = False
 
         pygame.display.flip()
         clock.tick(60)
