@@ -21,7 +21,7 @@ def main():
             state = Game(choice)
         else :
             break
-        
+
         print_inhabitant_images(state.inhabitant_deck)
         game_loop(state)
 
