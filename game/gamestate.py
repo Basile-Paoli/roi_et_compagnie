@@ -81,7 +81,6 @@ class DieRollState:
         return f"DieRollState(nb_tries={self.nb_tries}, dice=[{dice_str}])"
 
 
-
 class ShopSlot:
 
     def __init__(self, locations: list[Location], inhabitant: Optional[Inhabitant]=None) -> None:
@@ -104,10 +103,13 @@ class ShopSlot:
 
 
 class TargetNeededForDragonException(Exception):
+
     def __init__(self, dragon: Dragon):
         super().__init__(f"Target needed for Dragon")
         self.dragon = dragon
+
     pass
+
 
 class Game:
 
@@ -119,6 +121,7 @@ class Game:
         self.current_player_index = 0
         self.die_roll = DieRollState()
 
+        random.shuffle(self.inhabitant_deck)
         random.shuffle(self.penalty_deck)
 
         self.fill_shop()
@@ -186,7 +189,7 @@ class Game:
         else:
             return player.id == self.current_player.id
 
-    def take_inhabitant(self, inhabitant: Inhabitant, target_player: Player, end_turn: bool = True) -> None:
+    def take_inhabitant(self, inhabitant: Inhabitant, target_player: Player, end_turn: bool=True) -> None:
         slot_with_inhabitant = next((slot for slot in self.shop if slot.inhabitant == inhabitant), None)
         if not slot_with_inhabitant:
             raise ValueError("Inhabitant not found in shop.")
@@ -235,7 +238,7 @@ class Game:
                 next_slot = self.shop[i + 1]
                 if not next_slot.inhabitant:
                     continue
-                if isinstance(next_slot.inhabitant, Dragon) :
+                if isinstance(next_slot.inhabitant, Dragon):
                     raise TargetNeededForDragonException(next_slot.inhabitant)
                 self.take_inhabitant(next_slot.inhabitant, self.current_player, end_turn=False)
 
