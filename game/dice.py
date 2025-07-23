@@ -1,5 +1,5 @@
 import random
-from typing import Literal, Iterable
+from typing import Literal, Iterable, Any
 from enum import Enum
 
 type DiceValue = Literal[1, 2, 3, 4, 5, 6]
@@ -31,14 +31,14 @@ class Die(list[DieResult]):
         self.currentResult = random.choice(self)
         return self.currentResult
 
-    def to_json(self) -> dict:
+    def to_json(self) -> dict[Any, Any]:
         return {
             "currentResult": self.currentResult,
             "die": list(self)
         }
 
     @staticmethod
-    def from_json(data: dict) -> "Die":
+    def from_json(data: dict[Any, Any]) -> "Die":
         die = Die(((side[0], DiceColor.from_json(side[1])) for side in data["die"]))
         die.currentResult = (data["currentResult"][0], DiceColor.from_json(data["currentResult"][1]))
         return die

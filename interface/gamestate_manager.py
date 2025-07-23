@@ -2,7 +2,7 @@ import json
 import os
 from typing import Any
 
-def save_gamestate(state_json: dict, filename: str = "gamestate.json"):
+def save_gamestate(state_json: dict[Any, Any], filename: str = "gamestate.json"):
     with open(filename, "w", encoding="utf-8") as f:
         #json.dump(state_json, f, default= lambda o: o.to_json())
         json.dump(state_json, f, indent=4, default= lambda o: o.to_json())

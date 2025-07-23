@@ -1,8 +1,10 @@
 import pygame
 import sys
 
+from game.gamestate import Game
 
-def game_result(state):
+
+def game_result(state: Game):
     pygame.init()
     font = pygame.font.SysFont(None, 48)
     small_font = pygame.font.SysFont(None, 36)

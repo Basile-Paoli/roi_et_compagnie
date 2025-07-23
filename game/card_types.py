@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Iterable, Literal, Optional
+from typing import Iterable, Literal, Optional, Any
 
 from game.dice import DieResult
 
@@ -11,6 +11,8 @@ class KingdomCard(ABC):
     @abstractmethod
     def value(self, kingdom: Iterable["KingdomCard"]) -> int:
         pass
+
+    image_path: str
 
 
 class LocationType(Enum):
@@ -34,7 +36,7 @@ class Location(KingdomCard):
     def value(self, kingdom: Iterable[KingdomCard]) -> int:
         return self._value
 
-    def to_json(self) -> dict:
+    def to_json(self) -> dict[Any, Any]:
         return {
             "type": "location",
             "value": self._value,
@@ -42,7 +44,7 @@ class Location(KingdomCard):
         }
 
     @staticmethod
-    def from_json(data: dict) -> "Location":
+    def from_json(data: dict[Any, Any]) -> "Location":
         return Location(data["value"], LocationType(int(data["location_type"])))
 
 
@@ -71,7 +73,6 @@ class Inhabitant(KingdomCard, ABC):
     @abstractmethod
     def can_take(self, dice: Iterable[DieResult]) -> bool:
         pass
-    
 
 
 class Penalty(int, KingdomCard):
